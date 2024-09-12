@@ -21,9 +21,15 @@ describe('Meals routes', () => {
       .send({ name: 'John Doe', email: 'johndoe@gmail.com' })
       .expect(201)
 
+    const cookies = userResponse.get('Set-Cookie')
+
+    if (!cookies) {
+      throw new Error('No cookies returned from the user creation')
+    }
+
     await request(app.server)
       .post('/meals')
-      .set('Cookie', userResponse.get('Set-Cookie'))
+      .set('Cookie', cookies)
       .send({
         name: 'Breakfast',
         description: "It's a breakfast",
