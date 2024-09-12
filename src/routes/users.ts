@@ -15,7 +15,7 @@ export async function usersRoutes(app: FastifyInstance) {
     const userEmailChecks = await knex('users').where({ email }).first()
 
     if (userEmailChecks) {
-      return reply.send(400).send({ message: 'Email already used' })
+      return reply.status(400).send({ message: 'Email already used' })
     }
 
     let sessionId = request.cookies.sessionId
@@ -36,13 +36,13 @@ export async function usersRoutes(app: FastifyInstance) {
       session_id: sessionId,
     })
 
-    return reply.send(201).send()
+    return reply.status(201).send()
   })
 
   // rota apenas para checagem, apagar depois
-  app.get('/', async () => {
+  /* app.get('/', async () => {
     const allUsers = await knex('users').select('*')
 
     return { allUsers }
-  })
+  }) */
 }
